@@ -36,8 +36,8 @@ if [ -z "$SYSTEMD_PID" ]; then
     done
     if [ -d "/mnt/wslg" ]; then
       if [ ! -L "/tmp/.X11-unix" ]; then
-        rm -rf "/tmp/.X11-unix"
-        ln -s /mnt/wslg/.X11-unix /tmp/.X11-unix
+        sudo rm -rf "/tmp/.X11-unix"
+        sudo ln -s /mnt/wslg/.X11-unix /tmp/.X11-unix
       fi
     fi
 fi
