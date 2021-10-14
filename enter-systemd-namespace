@@ -24,6 +24,13 @@ if ! command -v /usr/bin/unshare > /dev/null; then
     exit 1
 fi
 
+if [ -d "/mnt/wslg" ]; then
+  if [ ! -L "/tmp/.X11-unix" ]; then
+    rm -rf "/tmp/.X11-unix"
+    ln -s /mnt/wslg/.X11-unix /tmp/.X11-unix
+  fi
+fi
+
 SYSTEMD_EXE="/lib/systemd/systemd --unit=multi-user.target"
 SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
 if [ -z "$SYSTEMD_PID" ]; then
@@ -47,3 +54,4 @@ if [ -n "$SYSTEMD_PID" ] && [ "$SYSTEMD_PID" != "1" ]; then
     echo "Existential crisis"
     exit 1
 fi
+
