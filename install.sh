@@ -51,7 +51,16 @@ function sysdrive_prefix {
 }
 
 sudo hwclock -s
-sudo apt-get update && sudo apt-get install -yqq daemonize dbus-user-session fontconfig
+install_packages=""
+for package in daemonize dbus-user-session fontconfig; do
+  if [ $(dpkg -l ${package} > /dev/null && echo $?) -ne 0 ]; then
+    install_packages+="${package} "
+  fi
+done
+
+if [ ${#install_packages} -gt 0 ]; then
+  sudo apt-get update && sudo apt-get install -yqq ${install_packages}
+fi
 
 sudo cp "$self_dir/start-systemd-namespace" /usr/sbin/start-systemd-namespace
 sudo cp "$self_dir/enter-systemd-namespace" /usr/sbin/enter-systemd-namespace
@@ -61,9 +70,17 @@ sudo tee /etc/sudoers.d/systemd-namespace >/dev/null <<EOF
 Defaults        env_keep += WSLPATH
 Defaults        env_keep += WSLENV
 Defaults        env_keep += WSL_INTEROP
+Defaults        env_keep += WT_PROFILE_ID
+Defaults        env_keep += WT_SESSION
 Defaults        env_keep += WSL_DISTRO_NAME
 Defaults        env_keep += PRE_NAMESPACE_PATH
 Defaults        env_keep += PRE_NAMESPACE_PWD
+Defaults        env_keep += PULSE_SERVER
+Defaults        env_keep += WAYLAND_DISPLAY
+Defaults        env_keep += DISPLAY
+Defaults        env_keep += HOSTTYPE
+Defaults        env_keep += NAME
+
 %sudo ALL=(ALL) NOPASSWD: /usr/sbin/enter-systemd-namespace
 EOF
 
