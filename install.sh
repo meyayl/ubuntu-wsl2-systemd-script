@@ -71,7 +71,7 @@ function sysdrive_prefix {
 sudo hwclock -s
 install_packages=""
 for package in daemonize dbus-user-session fontconfig; do
-  if [ $(dpkg -l ${package} > /dev/null 2>&1 && echo $?) -ne 0 ]; then
+  if [ $(dpkg -l ${package} &> /dev/null; echo $?) -ne 0 ]; then
     install_packages+="${package} "
   fi
 done
