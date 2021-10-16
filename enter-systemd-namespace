@@ -34,10 +34,10 @@ if [ -z "$SYSTEMD_PID" ]; then
         sleep 1
         SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
     done
-    if [ -d "/mnt/wslg" ]; then
+    if [ "${USE_WSLG_SOCKET}" != "false" ]; then
       if [ ! -L "/tmp/.X11-unix" ]; then
-        sudo rm -rf "/tmp/.X11-unix"
-        sudo ln -s /mnt/wslg/.X11-unix /tmp/.X11-unix
+        rm -rf "/tmp/.X11-unix"
+        ln -s /mnt/wslg/.X11-unix /tmp/.X11-unix
       fi
     fi
 fi
