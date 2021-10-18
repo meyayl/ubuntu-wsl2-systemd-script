@@ -103,11 +103,12 @@ $( [ "${use_wslg_socket}" == "true" ] && echo "Defaults        env_keep += DISPL
 %sudo ALL=(ALL) NOPASSWD: /usr/sbin/enter-systemd-namespace
 EOF
 
-cat << EOF > /etc/profile.d/00-systemd-namespace.sh
+sudo bash -c "cat << EOF > /etc/profile.d/00-systemd-namespace.sh
 # Start or enter a PID namespace in WSL2
 export USE_WSLG_SOCKET=${use_wslg_socket}
 source /usr/sbin/start-systemd-namespace
 EOF
+"
 
 sudo rm -f /etc/systemd/user/sockets.target.wants/dirmngr.socket
 sudo rm -f /etc/systemd/user/sockets.target.wants/gpg-agent*.socket
