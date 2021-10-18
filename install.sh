@@ -103,11 +103,11 @@ $( [ "${use_wslg_socket}" == "true" ] && echo "Defaults        env_keep += DISPL
 %sudo ALL=(ALL) NOPASSWD: /usr/sbin/enter-systemd-namespace
 EOF
 
-if ! grep 'start-systemd-namespace' /etc/bash.bashrc >/dev/null; then
-  sudo sed -i 2a"# Start or enter a PID namespace in WSL2\nexport USE_WSLG_SOCKET=${use_wslg_socket}\nsource /usr/sbin/start-systemd-namespace\n" /etc/bash.bashrc
-else
-  sudo sed -i "s/export USE_WSLG_SOCKET=.*/export USE_WSLG_SOCKET=${use_wslg_socket}/" /etc/bash.bashrc
-fi
+cat << EOF > /etc/profile.d/00-systemd-namespace.sh
+# Start or enter a PID namespace in WSL2
+export USE_WSLG_SOCKET=${use_wslg_socket}
+source /usr/sbin/start-systemd-namespace
+EOF
 
 sudo rm -f /etc/systemd/user/sockets.target.wants/dirmngr.socket
 sudo rm -f /etc/systemd/user/sockets.target.wants/gpg-agent*.socket
@@ -122,7 +122,7 @@ sudo rm -f /lib/systemd/system/systemd-networkd.socket
 
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ] && [ "$(head -n1  /proc/sys/fs/binfmt_misc/WSLInterop)" == "enabled" ]; then
   "$(interop_prefix)$(sysdrive_prefix)"/Windows/System32/cmd.exe /C setx WSLENV BASH_ENV/u
-  "$(interop_prefix)$(sysdrive_prefix)"/Windows/System32/cmd.exe /C setx BASH_ENV /etc/bash.bashrc
+  "$(interop_prefix)$(sysdrive_prefix)"/Windows/System32/cmd.exe /C setx BASH_ENV /etc/profile
 else
   echo
   echo "You need to manually run the following two commands in Windows' cmd.exe:"
