@@ -129,6 +129,6 @@ else
   echo "You need to manually run the following two commands in Windows' cmd.exe:"
   echo
   echo "  setx WSLENV BASH_ENV/u"
-  echo "  setx BASH_ENV /etc/bash.bashrc"
+  echo "  setx BASH_ENV /etc/profile"
   echo
 fi
