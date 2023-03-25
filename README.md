@@ -1,5 +1,9 @@
 # ubuntu-wsl2-systemd-script
 
+This project is not maintained anymore.
+
+Latest WSL for Win10/Win11 allows to enable systemd support for distributions: https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/#set-the-systemd-flag-set-in-your-wsl-distro-settings 
+
 These are scripts to add proper **systemd support** on **Ubuntu images of WSL2**.
 Forked from [the archived repo](https://github.com/DamionGans/ubuntu-wsl2-systemd-script) of DamionGans for better adaptation.
 
